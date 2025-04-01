@@ -1,0 +1,339 @@
+/* 모바일 최적화 추가 스타일 */
+@media (max-width: 768px) {
+  /* 기본 컨테이너 조정 */
+  .container {
+    width: 95%;
+    padding: 0 10px;
+  }
+  
+  /* 헤더 조정 */
+  header h1 {
+    font-size: 1.4rem;
+  }
+  
+  /* 네비게이션 메뉴 조정 */
+  header nav ul {
+    flex-direction: column;
+    margin-top: 0.5rem;
+  }
+  
+  header nav ul li {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* 테이블 반응형 조정 */
+  table {
+    font-size: 0.9rem;
+  }
+  
+  th, td {
+    padding: 0.5rem;
+  }
+  
+  /* 탭 버튼 조정 */
+  .tab-btn {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.9rem;
+    margin-right: 0.3rem;
+  }
+  
+  /* 검색 입력 필드 조정 */
+  .search-input {
+    width: 100%;
+  }
+  
+  /* 필터 버튼 조정 */
+  .filter-container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .filter-btn {
+    width: 100%;
+    text-align: center;
+  }
+  
+  /* 카드 스타일 조정 */
+  .card {
+    padding: 1rem;
+  }
+  
+  /* 제목 크기 조정 */
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  h3 {
+    font-size: 1.3rem;
+  }
+  
+  /* 목차 조정 */
+  .table-of-contents {
+    padding: 0.8rem;
+  }
+  
+  /* 스크롤 버튼 크기 조정 */
+  .scroll-top-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    right: 15px;
+    bottom: 15px;
+  }
+}
+
+/* 작은 모바일 화면 추가 최적화 */
+@media (max-width: 480px) {
+  /* 헤더 추가 조정 */
+  header h1 {
+    font-size: 1.2rem;
+  }
+  
+  /* 테이블 스크롤 처리 */
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+  }
+  
+  /* 탭 버튼 추가 조정 */
+  .tab-buttons {
+    flex-wrap: wrap;
+  }
+  
+  .tab-btn {
+    margin-bottom: 0.3rem;
+    font-size: 0.8rem;
+  }
+  
+  /* 제목 추가 크기 조정 */
+  h1 {
+    font-size: 1.6rem;
+  }
+  
+  h2 {
+    font-size: 1.3rem;
+  }
+  
+  h3 {
+    font-size: 1.1rem;
+  }
+}
+
+/* 스크롤 탑 버튼 스타일 */
+.scroll-top-btn {
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  bottom: 20px;
+  right: 20px;
+  background-color: #0033a0;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 1.5rem;
+  line-height: 45px;
+  cursor: pointer;
+  display: none;
+  z-index: 99;
+  border: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s;
+}
+
+.scroll-top-btn:hover {
+  background-color: #00a1e0;
+}
+
+/* 테이블 반응형 처리 */
+.table-responsive {
+  overflow-x: auto;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+/* 터치 디바이스 최적화 */
+@media (hover: none) {
+  /* 터치 디바이스에서 호버 효과 제거 */
+  a:hover, .btn:hover, tr:hover, .tab-btn:hover {
+    transition: none;
+  }
+  
+  /* 터치 타겟 크기 증가 */
+  button, .btn, .tab-btn, .filter-btn, nav ul li a {
+    padding: 0.7rem 1rem;
+    min-height: 44px;
+  }
+  
+  /* 스크롤 버튼 크기 증가 */
+  .scroll-top-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 1.8rem;
+    line-height: 55px;
+  }
+}
+
+/* 다크 모드 지원 */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #e0e0e0;
+  }
+  
+  .card {
+    background-color: #1e1e1e;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: #4dabf5;
+  }
+  
+  a {
+    color: #4dabf5;
+  }
+  
+  a:hover {
+    color: #81c6ff;
+  }
+  
+  table {
+    border-color: #333;
+  }
+  
+  th {
+    background-color: #0033a0;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #2a2a2a;
+  }
+  
+  tr:hover {
+    background-color: #333;
+  }
+  
+  td {
+    border-color: #333;
+  }
+  
+  .highlight-aws {
+    background-color: rgba(255, 153, 0, 0.2);
+  }
+  
+  .highlight-gcp {
+    background-color: rgba(66, 133, 244, 0.2);
+  }
+  
+  .highlight-azure {
+    background-color: rgba(0, 120, 212, 0.2);
+  }
+  
+  pre, code {
+    background-color: #2a2a2a;
+    border-color: #333;
+  }
+  
+  .tab-btn {
+    background-color: #2a2a2a;
+    border-color: #333;
+  }
+  
+  .tab-btn.active {
+    background-color: #1e1e1e;
+    color: #4dabf5;
+  }
+  
+  .tab-content {
+    border-color: #333;
+  }
+  
+  .filter-btn {
+    background-color: #2a2a2a;
+    border-color: #333;
+  }
+  
+  .filter-btn.active {
+    background-color: #0033a0;
+    color: white;
+  }
+  
+  .search-input {
+    background-color: #2a2a2a;
+    border-color: #333;
+    color: #e0e0e0;
+  }
+  
+  blockquote {
+    border-left-color: #4dabf5;
+    color: #aaa;
+  }
+}
+
+/* 접근성 개선 */
+:focus {
+  outline: 3px solid #00a1e0;
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* 인쇄 최적화 */
+@media print {
+  body {
+    background-color: white;
+    color: black;
+    font-size: 12pt;
+  }
+  
+  header, footer, .scroll-top-btn, .filter-container, .search-container, .tab-buttons {
+    display: none;
+  }
+  
+  main {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  a {
+    color: black;
+    text-decoration: underline;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+  
+  table {
+    page-break-inside: avoid;
+  }
+  
+  .tab-content {
+    display: block !important;
+    page-break-after: always;
+  }
+  
+  .card {
+    page-break-inside: avoid;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+}

@@ -1,0 +1,302 @@
+/* 전체 스타일 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f8f9fa;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* 헤더 스타일 */
+header {
+  background: linear-gradient(135deg, #0033a0, #00a1e0);
+  color: white;
+  padding: 1rem 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+header nav {
+  margin-top: 1rem;
+}
+
+header nav ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+header nav ul li {
+  margin-right: 1.5rem;
+}
+
+header nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+header nav ul li a:hover {
+  color: #f0f0f0;
+  text-decoration: underline;
+}
+
+/* 메인 콘텐츠 스타일 */
+main {
+  padding: 2rem 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  color: #0033a0;
+}
+
+h1 {
+  font-size: 2.2rem;
+  border-bottom: 2px solid #0033a0;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-size: 1.8rem;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.3rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: #00a1e0;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+ul, ol {
+  margin-left: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* 표 스타일 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  display: block;
+}
+
+th, td {
+  padding: 0.75rem;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #0033a0;
+  color: white;
+  font-weight: 600;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #e9f5ff;
+}
+
+/* 푸터 스타일 */
+footer {
+  background-color: #333;
+  color: white;
+  padding: 1.5rem 0;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  header nav ul {
+    flex-direction: column;
+  }
+  
+  header nav ul li {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  h3 {
+    font-size: 1.3rem;
+  }
+}
+
+/* 클라우드 서비스 제공업체별 색상 */
+.aws {
+  color: #FF9900;
+}
+
+.gcp {
+  color: #4285F4;
+}
+
+.azure {
+  color: #0078D4;
+}
+
+/* 비교 테이블 강조 */
+.highlight-row {
+  background-color: #e6f7ff !important;
+}
+
+.unique-feature {
+  font-weight: bold;
+  color: #0033a0;
+}
+
+/* 코드 블록 스타일 */
+pre, code {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0.2rem 0.4rem;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+pre {
+  padding: 1rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+/* 링크 스타일 */
+a {
+  color: #0033a0;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: #00a1e0;
+  text-decoration: underline;
+}
+
+/* 버튼 스타일 */
+.btn {
+  display: inline-block;
+  background-color: #0033a0;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #00a1e0;
+  text-decoration: none;
+}
+
+/* 카드 스타일 */
+.card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.card-title {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #0033a0;
+}
+
+/* 탭 스타일 */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.tab {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-bottom: none;
+  margin-right: 0.5rem;
+  border-radius: 4px 4px 0 0;
+}
+
+.tab.active {
+  background-color: white;
+  border-color: #ddd;
+  color: #0033a0;
+  font-weight: bold;
+}
+
+/* 알림 스타일 */
+.alert {
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.alert-info {
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
+  color: #0033a0;
+}
+
+.alert-warning {
+  background-color: #fffbe6;
+  border: 1px solid #ffe58f;
+  color: #ad8b00;
+}
+
+/* 인용구 스타일 */
+blockquote {
+  border-left: 4px solid #0033a0;
+  padding-left: 1rem;
+  margin-left: 0;
+  margin-bottom: 1rem;
+  color: #666;
+}
