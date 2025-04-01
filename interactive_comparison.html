@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>클라우드 서비스 비교 - 인터랙티브 테이블</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    .comparison-container {
+      margin: 2rem 0;
+    }
+    
+    .filter-container {
+      margin-bottom: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .search-container {
+      margin-bottom: 1rem;
+    }
+    
+    .search-input {
+      padding: 0.5rem;
+      width: 100%;
+      max-width: 300px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    
+    .filter-btn {
+      padding: 0.5rem 1rem;
+      background-color: #f0f0f0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .filter-btn.active {
+      background-color: #0033a0;
+      color: white;
+    }
+    
+    .sortable th {
+      cursor: pointer;
+    }
+    
+    .sortable th:hover {
+      background-color: #002277;
+    }
+    
+    .sortable th::after {
+      content: " ↕";
+      font-size: 0.8em;
+    }
+    
+    .sortable th.sort-asc::after {
+      content: " ↑";
+    }
+    
+    .sortable th.sort-desc::after {
+      content: " ↓";
+    }
+    
+    .highlight-aws {
+      background-color: rgba(255, 153, 0, 0.1);
+    }
+    
+    .highlight-gcp {
+      background-color: rgba(66, 133, 244, 0.1);
+    }
+    
+    .highlight-azure {
+      background-color: rgba(0, 120, 212, 0.1);
+    }
+    
+    .service-category {
+      font-weight: bold;
+    }
+    
+    .service-name {
+      font-style: italic;
+    }
+    
+    .unique-service {
+      color: #0033a0;
+      font-weight: bold;
+    }
+    
+    .tab-container {
+      margin-bottom: 2rem;
+    }
+    
+    .tab-buttons {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      background-color: #f0f0f0;
+      border: 1px solid #ddd;
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+      margin-right: 0.5rem;
+      cursor: pointer;
+    }
+    
+    .tab-btn.active {
+      background-color: white;
+      border-bottom: 1px solid white;
+      margin-bottom: -1px;
+    }
+    
+    .tab-content {
+      display: none;
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-top: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>클라우드 서비스 분류 체계 비교</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">홈</a></li>
+          <li><a href="aws_categories.html">AWS</a></li>
+          <li><a href="gcp_categories.html">GCP</a></li>
+          <li><a href="azure_categories.html">Azure</a></li>
+          <li><a href="interactive_comparison.html" class="active">인터랙티브 비교</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>클라우드 서비스 인터랙티브 비교</h1>
+    
+    <div class="tab-container">
+      <div class="tab-buttons">
+        <button class="tab-btn active" onclick="openTab(event, 'tab-categories')">대분류 카테고리 비교</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab-compute')">컴퓨팅 서비스</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab-storage')">스토리지 서비스</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab-database')">데이터베이스 서비스</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab-ai')">AI 및 머신러닝</button>
+      </div>
+      
+      <div id="tab-categories" class="tab-content active">
+        <div class="comparison-container">
+          <div class="search-container">
+            <input type="text" id="categorySearch" class="search-input" placeholder="서비스 영역 검색..." onkeyup="searchTable('categorySearch', 'categoryTable')">
+          </div>
+          
+          <div class="filter-container">
+            <button class="filter-btn active" onclick="filterTable('all')">모두 보기</button>
+            <button class="filter-btn" onclick="filterTable('aws')">AWS</button>
+            <button class="filter-btn" onclick="filterTable('gcp')">GCP</button>
+            <button class="filter-btn" onclick="filterTable('azure')">Azure</button>
+          </div>
+          
+          <table id="categoryTable" class="sortable">
+            <thead>
+              <tr>
+                <th onclick="sortTable('categoryTable', 0)">서비스 영역</th>
+                <th onclick="sortTable('categoryTable', 1)">AWS</th>
+                <th onclick="sortTable('categoryTable', 2)">GCP</th>
+                <th onclick="sortTable('categoryTable', 3)">Azure</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>컴퓨팅</td>
+                <td class="highlight-aws">컴퓨팅</td>
+                <td class="highlight-gcp">컴퓨팅</td>
+                <td class="highlight-azure">Compute</td>
+              </tr>
+              <tr>
+                <td>스토리지</td>
+                <td class="highlight-aws">스토리지</td>
+                <td class="highlight-gcp">스토리지</td>
+                <td class="highlight-azure">Storage</td>
+              </tr>
+              <tr>
+                <td>데이터베이스</td>
+                <td class="highlight-aws">데이터베이스</td>
+                <td class="highlight-gcp">데이터베이스</td>
+                <td class="highlight-azure">Databases</td>
+              </tr>
+              <tr>
+                <td>네트워킹</td>
+                <td class="highlight-aws">네트워킹 및 콘텐츠 전송</td>
+                <td class="highlight-gcp">네트워킹</td>
+                <td class="highlight-azure">Networking</td>
+              </tr>
+              <tr>
+                <td>분석</td>
+                <td class="highlight-aws">분석</td>
+                <td class="highlight-gcp">데이터 분석</td>
+                <td class="highlight-azure">Analytics</td>
+              </tr>
+              <tr>
+                <td>AI/ML</td>
+                <td class="highlight-aws">Machine Learning(ML) 및 인공 지능(AI)</td>
+                <td class="highlight-gcp">AI 및 머신러닝</td>
+                <td class="highlight-azure">AI + Machine Learning</td>
+              </tr>
+              <tr>
+                <td>개발자 도구</td>
+                <td class="highlight-aws">개발자 도구</td>
+                <td class="highlight-gcp">개발자 도구</td>
+                <td class="highlight-azure">Developer Tools</td>
+              </tr>
+              <tr>
+                <td>관리 및 거버넌스</td>
+                <td class="highlight-aws">관리 및 거버넌스</td>
+                <td class="highlight-gcp">관리 도구</td>
+                <td class="highlight-azure">Management and Governance</td>
+              </tr>
+              <tr>
+                <td>보안</td>
+                <td class="highlight-aws">보안, 자격 증명 및 규정 준수</td>
+                <td class="highlight-gcp">보안</td>
+                <td class="highlight-azure">Security</td>
+              </tr>
+              <tr>
+                <td>통합</td>
+                <td class="highlight-aws">애플리케이션 통합</td>
+                <td class="highlight-gcp">통합 서비스</td>
+                <td class="highlight-azure">Integration</td>
+              </tr>
+              <tr>
+                <td>컨테이너</td>
+                <td class="highlight-aws">컨테이너</td>
+                <td class="highlight-gcp">컨테이너</td>
+                <td class="highlight-azure">Containers</td>
+              </tr>
+              <tr>
+                <td>IoT</td>
+                <td class="highlight-aws">사물 인터넷(IoT)</td>
+                <td class="highlight-gcp">IoT</td>
+                <td class="highlight-azure">Internet of Things</td>
+              </tr>
+              <tr>
+                <td>미디어</td>
+                <td class="highlight-aws">미디어</td>
+                <td class="highlight-gcp">미디어</td>
+                <td class="highlight-azure">Media</td>
+              </tr>
+              <tr>
+                <td>마이그레이션</td>
+                <td class="highlight-aws">마이그레이션 및 전송</td>
+                <td class="highlight-gcp">마이그레이션</td>
+                <td class="highlight-azure">Migration</td>
+              </tr>
+              <tr>
+                <td>비즈니스 애플리케이션</td>
+                <td class="highlight-aws">비즈니스 애플리케이션</td>
+                <td class="highlight-gcp">비즈니스 인텔리전스</td>
+                <td class="highlight-azure">비즈니스 애플리케이션(추정)</td>
+              </tr>
+              <tr>
+                <td>최종 사용자 컴퓨팅</td>
+                <td class="highlight-aws">최종 사용자 컴퓨팅</td>
+                <td>해당 없음</td>
+                <td class="highlight-azure">Virtual desktop infrastructure</td>
+              </tr>
+              <tr>
+                <td>모바일</td>
+                <td class="highlight-aws">프런트엔드 웹 및 모바일</td>
+                <td>해당 없음</td>
+                <td class="highlight-azure">Mobile</td>
+              </tr>
+              <tr>
+                <td>하이브리드 클라우드</td>
+                <td>해당 없음</td>
+                <td class="highlight-gcp">하이브리드 및 멀티 클라우드</td>
+                <td class="highlight-azure">Hybrid + multicloud</td>
+              </tr>
+              <tr>
+                <td>블록체인</td>
+                <td class="highlight-aws unique-service">블록체인</td>
+                <td>해당 없음</td>
+                <td>해당 없음</td>
+              </tr>
+              <tr>
+                <td>로봇</td>
+                <td class="highlight-aws unique-service">로봇</td>
+                <td>해당 없음</td>
+                <td>해당 없음</td>
+              </tr>
+              <tr>
+                <td>양자 기술</td>
+                <td class="highlight-aws unique-service">양자 기술</td>
+                <td>해당 없음</td>
+                <td>해당 없음</td>
+              </tr>
+              <tr>
+                <td>위성</td>
+                <td class="highlight-aws unique-service">위성</td>
+                <td>해당 없음</td>
+                <td>해당 없음</td>
+              </tr>
+              <tr>
+                <td>게임 기술</td>
+                <td class="highlight-aws unique-service">게임 기술</td>
+                <td>해당 없음</td>
+                <td>해당 없음</td>
+              </tr>
+              <tr>
+                <td>클라우드 재무 관리</td>
+                <td class="highlight-aws unique-service">클라우드 재무 관리</td>
+                <td>해당 없음</td>
+                <td>해당 없음</td>
+              </tr>
+              <tr>
+                <td>고객 활성화</td>
+                <td class="highlight-aws unique-service">고객 활성화</td>
+                <td>해당 없음</td>
+                <td>해당 없음</td>
+              </tr>
+              <tr>
+                <td>업종별</td>
+                <td>해당 없음</td>
+                <td class="highlight-gcp unique-service">업종별</td>
+                <td>해당 없음</td>
+              </tr>
+              <tr>
+                <td>분산 클라우드</td>
+                <td>해당 없음</td>
+                <td class="highlight-gcp unique-service">분산 클라우드</td>
+                <td>해당 없음</td>
+              </tr>
+              <tr>
+                <td>혼합 현실</td>
+                <td>해당 없음</td>
+                <td>해당 없음</td>
+                <td class="highlight-azure unique-service">Mixed reality</td>
+              </tr>
+              <tr>
+                <td>웹</td>
+                <td>해당 없음</td>
+                <td>해당 없음</td>
+                <td class="highlight-azure unique-service">Web</td>
+              </tr>
+              <tr>
+                <td>ID</td>
+                <td>해당 없음</td>
+                <td>해당 없음</td>
+                <td class="highlight-azure unique-service">Identity</td>
+              </tr>
+              <tr>
+                <td>DevOps</td>
+                <td>해당 없음</td>
+                <td>해당 없음</td>
+                <td class="highlight-azure unique-service">DevOps</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div id="tab-compute" class="tab-content">
+        <div class="comparison-container">
+          <div class="search-container">
+            <input type="text" id="computeSearch" class="search-input" placeholder="컴퓨팅 서비스 검색..." onkeyup="searchTable('computeSearch', 'computeTable')">
+          </div>
+          
+          <table id="computeTable" class="sortable">
+            <thead>
+              <tr>
+                <th onclick="sortTable('computeTable', 0)">서비스 유형</th>
+                <th onclick="sortTable('computeTable', 1)">AWS</th>
+                <th onclick="sortTable('computeTable', 2)">GCP</th>
+                <th onclick="sortTable('computeTable', 3)">Azure</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>가상 머신</td>
+                <td class="highlight-aws">Amazon EC2</td>
+                <td class="highlight-gcp">Compute Engine</td>
+                <td class="highlight-azure">Azure Virtual Machines</td>
+              </tr>
+              <tr>
+                <td>서버리스 컴퓨팅</td>
+                <td class="highlight-aws">AWS Lambda</td>
+                <td class="highlight-gcp">Cloud Functions</td>
+                <td class="highlight-azure">Azure Functions</td>
+              </tr>
+              <tr>
+                <td>컨테이너 오케스트레이션</td>
+                <td class="highlight-aws">Amazon EKS</td>
+                <td class="highlight-gcp">Google Kubernetes Engine</td>
+                <td class="highlight-azure">Azure Kubernetes Service</td>
+              </tr>
+              <tr>
+                <td>컨테이너 서비스</td>
+                <td class="highlight-aws">AWS Fargate</td>
+                <td class="highlight-gcp">Cloud Run</td>
+                <td class="highlight-azure">Azure Container Instances</td>
+              </tr>
+              <tr>
+                <td>PaaS</td>
+                <td class="highlight-aws">AWS Elastic Beanstalk</td>
+                <td class="highlight-gcp">App Engine</td>
+                <td class="highlight-azure">Azure App Service</td>
+              </tr>
+              <tr>
+                <td>자동 확장</td>
+                <td class="highlight-aws">Amazon EC2 Auto Scaling</td>
+                <td>해당 없음</td>
+                <td class="highlight-azure">Azure Autoscale</td>
+              </tr>
+              <tr>
+                <td>이미지 빌더</td>
+                <td class="highlight-aws">Amazon EC2 Image Builder</td>
+                <td>해당 없음</td>
+                <td class="highlight-azure">Azure VM Image Builder</td>
+              </tr>
+              <tr>
+                <td>경량 가상 서버</td>
+                <td class="highlight-aws unique-service">Amazon Lightsail</td>
+                <td>해당 없음</td>
+                <td>해당 없음</td>
+              </tr>
+              <tr>
+                <td>서버리스 애플리케이션 저장소</td>
+                <td class="highlight-aws unique-service">AWS Serverless Application Repository</td>
+                <td>해당 없음</td>
+                <td>해당 없음</td>
+              </tr>
+              <tr>
+                <td>하이브리드 클라우드</td>
+                <td class="highlight-aws">AWS Outposts</td>
+                <td>해당 없음</td>
+                <td class="highlight-azure">Azure Stack</td>
+              </tr>
+              <tr>
+                <td>엣지 컴퓨팅</td>
+                <td class="highlight-aws">AWS Wavelength</td>
+                <td>해당 없음</td>
+                <td class="highlight-azure">Azure Edge Zones</td>
+              </tr>
+              <tr>
+                <td>VMware 클라우드</td>
+                <td class="highlight-aws">VMware Cloud on AWS</td>
+                <td>해당 없음</td>
+                <td class="highlight-azure">Azure VMware Solution</td>
+              </tr>
+              <tr>
+                <td>배치 처리</td>
+                <td class="highlight-aws">AWS Batch</td>
+                <td>해당 없음</td>
+                <td class="highlight-azure">Azure Batch</td>
+              </tr>
+              <tr>
+                <td>리눅스 배포판</td>
+                <td class="highlight-aws unique-service">Amazon Linux 2023</td>
+                <td>해당 없음</td>
+                <td>해당 없음</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div id="tab-storage" class="tab-content">
+        <div class="comparison-container">
+          <div class="search-container">
+            <input type="text" id="storageSearch" class="search-input" placeholder="스토리지 서비스 검색..." onkeyup="searchTable('storageSearch', 'storageTable')">
+          </div>
+          
+          <table id="storageTable" class="sortable">
+            <thead>
+              <tr>
+                <th onclick="sortTable('storageTable', 0)">서비스 유형</th>
+                <th onclick="sortTable('storageTable', 1)">AWS</th>
+                <th onclick="sortTable('storageTable', 2)">GCP</th>
+                <th onclick="sortTable('storageTable', 3)">Azure</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>객체 스토리지</td>
+                <td class="highlight-aws">Amazon S3</td>
+                <td class="highlight-gcp">Cloud Storage</td>
+                <td class="highlight-azure">Azure Blob Storage</td>
+              </tr>
+              <tr>
+                <td>블록 스토리지</td>
+                <td class="highlight-aws">Amazon EBS</td>
+                <td class="highlight-gcp">Persistent Disk</td>
+                <td class="highlight-azure">Azure Disk Storage</td>
+              </tr>
+              <tr>
+                <td>파일 스토리지</td>
+                <td class="highlight-aws">Amazon EFS</td>
+                <td class="highlight-gcp">Filestore</td>
+                <td class="highlight-azure">Azure Files</td>
+              </tr>
+              <tr>
+                <td>아카이브 스토리지</td>
+                <td class="highlight-aws">Amazon S3 Glacier</td>
+                <td class="highlight-gcp">Cloud Storage Archive</td>
+                <td class="highlight-azure">Azure Archive Storage</td>
+              </tr>
+              <tr>
+                <td>데이터 백업</td>
+                <td class="highlight-aws">AWS Backup</td>
+                <td>해당 없음</td>
+                <td class="highlight-azure">Azure Backup</td>
+              </tr>
+              <tr>
+                <td>하이브리드 스토리지</td>
+                <td class="highlight-aws">AWS Storage Gateway</td>
+                <td>해당 없음</td>
+                <td class="highlight-azure">Azure StorSimple</td>
+              </tr>
+              <tr>
+                <td>데이터 전송</td>
+                <td class="highlight-aws">AWS DataSync</td>
+                <td>해당 없음</td>
+                <td class="highlight-azure">Azure Data Box</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div id="tab-database" class="tab-content">
+        <div class="comparison-container">
+          <div class="search-container">
+            <input type="text" id="dbSearch" class="search-input" placeholder="데이터베이스 서비스 검색..." onkeyup="searchTable('dbSearch', 'dbTable')">
+          </div>
+          
+          <table id="dbTable" class="sortable">
+            <thead>
+              <tr>
+                <th onclick="sortTable('dbTable', 0)">서비스 유형</th>
+                <th onclick="sortTable('dbTable', 1)">AWS</th>
+                <th onclick="sortTable('dbTable', 2)">GCP</th>
+                <th onclick="sortTable('dbTable', 3)">Azure</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>관계형 데이터베이스</td>
+                <td class="highlight-aws">Amazon RDS</td>
+                <td class="highlight-gcp">Cloud SQL</td>
+                <td class="highlight-azure">Azure SQL Database</td>
+              </tr>
+              <tr>
+                <td>NoSQL 데이터베이스</td>
+                <td class="highlight-aws">Amazon DynamoDB</td>
+                <td class="highlight-gcp">Firestore</td>
+                <td class="highlight-azure">Azure Cosmos DB</td>
+              </tr>
+              <tr>
+                <td>인메모리 데이터베이스</td>
+                <td class="highlight-aws">Amazon ElastiCache</td>
+                <td class="highlight-gcp">Memorystore</td>
+                <td class="highlight-azure">Azure Cache for Redis</td>
+              </tr>
+              <tr>
+                <td>데이터 웨어하우스</td>
+                <td class="highlight-aws">Amazon Redshift</td>
+                <td class="highlight-gcp">BigQuery</td>
+                <td class="highlight-azure">Azure Synapse Analytics</td>
+              </tr>
+              <tr>
+                <td>그래프 데이터베이스</td>
+                <td class="highlight-aws">Amazon Neptune</td>
+                <td>해당 없음</td>
+                <td class="highlight-azure">Azure Cosmos DB Graph API</td>
+              </tr>
+              <tr>
+                <td>시계열 데이터베이스</td>
+                <td class="highlight-aws">Amazon Timestream</td>
+                <td>해당 없음</td>
+                <td class="highlight-azure">Azure Time Series Insights</td>
+              </tr>
+              <tr>
+                <td>원장 데이터베이스</td>
+                <td class="highlight-aws unique-service">Amazon QLDB</td>
+                <td>해당 없음</td>
+                <td>해당 없음</td>
+              </tr>
+              <tr>
+                <td>마이그레이션 서비스</td>
+                <td class="highlight-aws">AWS DMS</td>
+                <td class="highlight-gcp">Database Migration Service</td>
+                <td class="highlight-azure">Azure Database Migration Service</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div id="tab-ai" class="tab-content">
+        <div class="comparison-container">
+          <div class="search-container">
+            <input type="text" id="aiSearch" class="search-input" placeholder="AI 및 머신러닝 서비스 검색..." onkeyup="searchTable('aiSearch', 'aiTable')">
+          </div>
+          
+          <table id="aiTable" class="sortable">
+            <thead>
+              <tr>
+                <th onclick="sortTable('aiTable', 0)">서비스 유형</th>
+                <th onclick="sortTable('aiTable', 1)">AWS</th>
+                <th onclick="sortTable('aiTable', 2)">GCP</th>
+                <th onclick="sortTable('aiTable', 3)">Azure</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ML 플랫폼</td>
+                <td class="highlight-aws">Amazon SageMaker</td>
+                <td class="highlight-gcp">Vertex AI Platform</td>
+                <td class="highlight-azure">Azure Machine Learning</td>
+              </tr>
+              <tr>
+                <td>생성형 AI</td>
+                <td class="highlight-aws">Amazon Bedrock</td>
+                <td class="highlight-gcp">Vertex AI Studio</td>
+                <td class="highlight-azure">Azure OpenAI Service</td>
+              </tr>
+              <tr>
+                <td>AI 에이전트</td>
+                <td class="highlight-aws">Amazon Q</td>
+                <td class="highlight-gcp">Vertex AI Agent Builder</td>
+                <td class="highlight-azure">Azure AI Studio</td>
+              </tr>
+              <tr>
+                <td>대규모 언어 모델</td>
+                <td class="highlight-aws">Amazon Titan</td>
+                <td class="highlight-gcp">Gemini</td>
+                <td class="highlight-azure">Azure OpenAI</td>
+              </tr>
+              <tr>
+                <td>컴퓨터 비전</td>
+                <td class="highlight-aws">Amazon Rekognition</td>
+                <td class="highlight-gcp">Vision AI</td>
+                <td class="highlight-azure">Azure Computer Vision</td>
+              </tr>
+              <tr>
+                <td>음성 인식</td>
+                <td class="highlight-aws">Amazon Transcribe</td>
+                <td class="highlight-gcp">Speech-to-Text</td>
+                <td class="highlight-azure">Azure Speech Services</td>
+              </tr>
+              <tr>
+                <td>자연어 처리</td>
+                <td class="highlight-aws">Amazon Comprehend</td>
+                <td class="highlight-gcp">Natural Language API</td>
+                <td class="highlight-azure">Azure Text Analytics</td>
+              </tr>
+              <tr>
+                <td>번역</td>
+                <td class="highlight-aws">Amazon Translate</td>
+                <td class="highlight-gcp">Translation API</td>
+                <td class="highlight-azure">Azure Translator</td>
+              </tr>
+              <tr>
+                <td>챗봇</td>
+                <td class="highlight-aws">Amazon Lex</td>
+                <td class="highlight-gcp">Dialogflow</td>
+                <td class="highlight-azure">Azure Bot Service</td>
+              </tr>
+              <tr>
+                <td>이상 탐지</td>
+                <td class="highlight-aws">Amazon Lookout</td>
+                <td>해당 없음</td>
+                <td class="highlight-azure">Azure Anomaly Detector</td>
+              </tr>
+              <tr>
+                <td>예측 분석</td>
+                <td class="highlight-aws">Amazon Forecast</td>
+                <td>해당 없음</td>
+                <td class="highlight-azure">Azure Time Series Insights</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h2>클라우드 서비스 제공업체별 고유 카테고리</h2>
+      
+      <h3 class="aws">AWS 고유 카테고리</h3>
+      <ul>
+        <li>블록체인</li>
+        <li>로봇</li>
+        <li>양자 기술</li>
+        <li>위성</li>
+        <li>게임 기술</li>
+        <li>클라우드 재무 관리</li>
+        <li>고객 활성화</li>
+      </ul>
+      
+      <h3 class="gcp">GCP 고유 카테고리</h3>
+      <ul>
+        <li>업종별</li>
+        <li>분산 클라우드</li>
+      </ul>
+      
+      <h3 class="azure">Azure 고유 카테고리</h3>
+      <ul>
+        <li>Mixed reality</li>
+        <li>Web (별도 카테고리로 분류)</li>
+        <li>Identity (별도 카테고리로 분류)</li>
+        <li>DevOps (별도 카테고리로 분류)</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h2>분류 체계 특징 비교</h2>
+      
+      <h3 class="aws">AWS 서비스 분류 체계 특징</h3>
+      <p>AWS는 가장 많은 수의 대분류 카테고리(24개)를 보유하고 있으며, 세분화된 서비스 카테고리로 구체적인 사용 사례에 맞춘 분류를 제공합니다. 미래 기술(양자 컴퓨팅, 로봇, 위성 등)을 별도 카테고리로 분류하고, 재무 관리를 별도의 대분류 카테고리로 구분하여 비용 최적화를 강조합니다. 또한 블록체인과 같은 특화 기술을 별도 카테고리로 분류하는 특징이 있습니다.</p>
+      
+      <h3 class="gcp">GCP 서비스 분류 체계 특징</h3>
+      <p>GCP는 상대적으로 간결한 대분류 카테고리(13개)를 가지고 있으며, 업종별 카테고리를 통해 산업 특화 솔루션을 강조합니다. 분산 클라우드 카테고리를 통해 하이브리드/멀티 클라우드 전략을 강조하고, 데이터 분석과 AI에 중점을 둔 분류 체계를 가지고 있습니다. 비즈니스 인텔리전스를 별도 카테고리로 분류하여 데이터 기반 의사결정을 강조하는 특징이 있습니다.</p>
+      
+      <h3 class="azure">Azure 서비스 분류 체계 특징</h3>
+      <p>Azure는 중간 수준의 대분류 카테고리(21개)를 가지고 있으며, DevOps를 별도 카테고리로 분류하여 개발 및 운영 통합을 강조합니다. Identity를 별도 카테고리로 분류하여 보안 및 ID 관리를 강조하고, Mixed reality와 같은 차별화된 기술 영역을 포함하고 있습니다. Web을 별도 카테고리로 분류하여 웹 애플리케이션 개발을 강조하는 특징이 있습니다.</p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 클라우드 서비스 분류 체계 비교</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // 페이지 로드 시 첫 번째 탭 활성화
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelector('.tab-btn').click();
+    });
+    
+    // 탭 전환 함수
+    function openTab(evt, tabId) {
+      // 모든 탭 콘텐츠 숨기기
+      const tabContents = document.getElementsByClassName('tab-content');
+      for (let i = 0; i < tabContents.length; i++) {
+        tabContents[i].classList.remove('active');
+      }
+      
+      // 모든 탭 버튼 비활성화
+      const tabBtns = document.getElementsByClassName('tab-btn');
+      for (let i = 0; i < tabBtns.length; i++) {
+        tabBtns[i].classList.remove('active');
+      }
+      
+      // 선택한 탭 활성화
+      document.getElementById(tabId).classList.add('active');
+      evt.currentTarget.classList.add('active');
+    }
+    
+    // 테이블 검색 함수
+    function searchTable(inputId, tableId) {
+      const input = document.getElementById(inputId);
+      const table = document.getElementById(tableId);
+      const filter = input.value.toUpperCase();
+      const rows = table.getElementsByTagName('tr');
+      
+      for (let i = 1; i < rows.length; i++) {
+        let found = false;
+        const cells = rows[i].getElementsByTagName('td');
+        
+        for (let j = 0; j < cells.length; j++) {
+          const cell = cells[j];
+          if (cell) {
+            const text = cell.textContent || cell.innerText;
+            if (text.toUpperCase().indexOf(filter) > -1) {
+              found = true;
+              break;
+            }
+          }
+        }
+        
+        rows[i].style.display = found ? '' : 'none';
+      }
+    }
+    
+    // 테이블 정렬 함수
+    function sortTable(tableId, columnIndex) {
+      const table = document.getElementById(tableId);
+      const tbody = table.getElementsByTagName('tbody')[0];
+      const rows = Array.from(tbody.getElementsByTagName('tr'));
+      const headers = table.getElementsByTagName('th');
+      
+      // 정렬 방향 결정
+      let sortDirection = 'asc';
+      if (headers[columnIndex].classList.contains('sort-asc')) {
+        sortDirection = 'desc';
+        headers[columnIndex].classList.remove('sort-asc');
+        headers[columnIndex].classList.add('sort-desc');
+      } else {
+        headers[columnIndex].classList.remove('sort-desc');
+        headers[columnIndex].classList.add('sort-asc');
+      }
+      
+      // 다른 헤더의 정렬 표시 제거
+      for (let i = 0; i < headers.length; i++) {
+        if (i !== columnIndex) {
+          headers[i].classList.remove('sort-asc');
+          headers[i].classList.remove('sort-desc');
+        }
+      }
+      
+      // 행 정렬
+      rows.sort((a, b) => {
+        const cellA = a.getElementsByTagName('td')[columnIndex].textContent.trim();
+        const cellB = b.getElementsByTagName('td')[columnIndex].textContent.trim();
+        
+        if (sortDirection === 'asc') {
+          return cellA.localeCompare(cellB);
+        } else {
+          return cellB.localeCompare(cellA);
+        }
+      });
+      
+      // 정렬된 행 다시 삽입
+      rows.forEach(row => tbody.appendChild(row));
+    }
+    
+    // 테이블 필터링 함수
+    function filterTable(provider) {
+      const rows = document.querySelectorAll('#categoryTable tbody tr');
+      
+      rows.forEach(row => {
+        if (provider === 'all') {
+          row.style.display = '';
+        } else {
+          const awsCell = row.querySelector('td:nth-child(2)');
+          const gcpCell = row.querySelector('td:nth-child(3)');
+          const azureCell = row.querySelector('td:nth-child(4)');
+          
+          if (provider === 'aws' && awsCell.textContent !== '해당 없음') {
+            row.style.display = '';
+          } else if (provider === 'gcp' && gcpCell.textContent !== '해당 없음') {
+            row.style.display = '';
+          } else if (provider === 'azure' && azureCell.textContent !== '해당 없음') {
+            row.style.display = '';
+          } else {
+            row.style.display = 'none';
+          }
+        }
+      });
+      
+      // 필터 버튼 활성화 상태 변경
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      filterBtns.forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      document.querySelector(`.filter-btn[onclick="filterTable('${provider}')"]`).classList.add('active');
+    }
+  </script>
+</body>
+</html>

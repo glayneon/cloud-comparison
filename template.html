@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>클라우드 서비스 분류 체계 비교</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/mobile.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>클라우드 서비스 분류 체계 비교</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html" class="active">홈</a></li>
+          <li><a href="aws_categories.html">AWS</a></li>
+          <li><a href="gcp_categories.html">GCP</a></li>
+          <li><a href="azure_categories.html">Azure</a></li>
+          <li><a href="interactive_comparison.html">인터랙티브 비교</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="content">
+      <!-- 마크다운 변환 내용이 여기에 들어갑니다 -->
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 클라우드 서비스 분류 체계 비교</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // 모든 HTML 파일에 모바일 CSS 링크 추가
+    document.addEventListener('DOMContentLoaded', function() {
+      const htmlFiles = ['index.html', 'aws_categories.html', 'gcp_categories.html', 'azure_categories.html'];
+      
+      // 현재 페이지의 내용 로드
+      const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+      
+      if (currentPage === 'index.html') {
+        fetch('final_comparison_document.html')
+          .then(response => response.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const content = doc.querySelector('main').innerHTML;
+            document.getElementById('content').innerHTML = content;
+          })
+          .catch(error => console.error('Error loading content:', error));
+      }
+    });
+  </script>
+</body>
+</html>
